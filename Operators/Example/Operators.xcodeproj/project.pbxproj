@@ -9,17 +9,19 @@
 /* Begin PBXBuildFile section */
 		607FACEC1AFB9204008FA782 /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* Tests.swift */; };
 		BDF23668B94E33E1AE57EB0A /* Pods_Operators_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E8C2DF0198328A8687CB3228 /* Pods_Operators_Tests.framework */; };
+		C7353EEC1FACF1A400A24ADE /* AsyncOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7353EEB1FACF1A400A24ADE /* AsyncOperationTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		54400184587409DFEAE8D8D7 /* Operators.podspec */ = {isa = PBXFileReference; includeInIndex = 1; name = Operators.podspec; path = ../Operators.podspec; sourceTree = "<group>"; };
-		55FEC717A26282ED0037D757 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
+		54400184587409DFEAE8D8D7 /* Operators.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = Operators.podspec; path = ../Operators.podspec; sourceTree = "<group>"; };
+		55FEC717A26282ED0037D757 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		607FACE51AFB9204008FA782 /* Operators_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Operators_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACEA1AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACEB1AFB9204008FA782 /* Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
-		69E6F7656905729F98ECABDD /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		69E6F7656905729F98ECABDD /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		8839100596D92BDC568FB75C /* Pods-Operators_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Operators_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Operators_Tests/Pods-Operators_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		AA2DB4C2EF0A8EE88A150886 /* Pods-Operators_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Operators_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Operators_Tests/Pods-Operators_Tests.release.xcconfig"; sourceTree = "<group>"; };
+		C7353EEB1FACF1A400A24ADE /* AsyncOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsyncOperationTests.swift; sourceTree = "<group>"; };
 		E8C2DF0198328A8687CB3228 /* Pods_Operators_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Operators_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -65,6 +67,7 @@
 		607FACE81AFB9204008FA782 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				C7353EEB1FACF1A400A24ADE /* AsyncOperationTests.swift */,
 				607FACEB1AFB9204008FA782 /* Tests.swift */,
 				607FACE91AFB9204008FA782 /* Supporting Files */,
 			);
@@ -131,10 +134,6 @@
 				LastUpgradeCheck = 0830;
 				ORGANIZATIONNAME = CocoaPods;
 				TargetAttributes = {
-					607FACCF1AFB9204008FA782 = {
-						CreatedOnToolsVersion = 6.3.1;
-						LastSwiftMigration = 0900;
-					};
 					607FACE41AFB9204008FA782 = {
 						CreatedOnToolsVersion = 6.3.1;
 						LastSwiftMigration = 0900;
@@ -234,6 +233,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				607FACEC1AFB9204008FA782 /* Tests.swift in Sources */,
+				C7353EEC1FACF1A400A24ADE /* AsyncOperationTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
