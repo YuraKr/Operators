@@ -23,12 +23,23 @@ public class CompletionOperation<T> {
         return CompletionOperation<T>.create({ (completion) in
             
             self.observe({ (res) in
-                completion(res)
                 next(res)
+                completion(res)
             })
             
         })
         
+    }
+    
+    public func filter(_ filter: @escaping (_ value: T) -> (Bool)) -> CompletionOperation<T>{
+        
+        return CompletionOperation<T>.create({ (completion) in
+            self.observe({ (res) in
+                if (filter(res)) {
+                    completion(res)
+                }
+            })
+        })
     }
     
     public func convert<OtherType>(_ convertClosure: @escaping (_ value: T) -> (OtherType)) -> CompletionOperation<OtherType>{
