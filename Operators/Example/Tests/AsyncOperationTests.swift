@@ -3,6 +3,7 @@
 import Quick
 import Nimble
 import Operators
+import Foundation
 
 class CompletionOperationTests: QuickSpec {
     override func spec() {
@@ -27,9 +28,24 @@ class CompletionOperationTests: QuickSpec {
         }
         
         it("Event") {
+            let nc = NotificationCenter.default
+            let name = Notification.Name("test")
+            let event = NotificationCenterEvent<String>(nc, name:name)
             
-            Event<>
+            let subscriber1 = event.subscibe(handler: { (value:String) in
+                print("-> Subscriber 1 \(value)")
+            })
             
+            let subscriber2 = event.subscibe(handler: { (value:String) in
+                print("-> Subscriber 2 \(value)")
+            })
+            event.raise(value: "value")
+            
+            subscriber1.unsubsribe()
+            
+            event.raise(value: "next value")
+            
+            subscriber2.unsubsribe()
         }
     }
 }
