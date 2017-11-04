@@ -25,5 +25,11 @@ class CompletionOperationTests: QuickSpec {
             })
             
         }
+        
+        it("Event") {
+            
+            Event<>
+            
+        }
     }
 }
