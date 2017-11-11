@@ -10,6 +10,14 @@ public class CompletionOperation<T> {
         return CompletionOperation<Type>(operation)
     }
     
+    public static func signal<Type>(_ array:[Type]) -> CompletionOperation<Type>{
+        return CompletionOperation<Type>.create({ (completion) in
+            for value in array {
+                completion(value)
+            }
+        })
+    }
+    
     private init(_ operation: @escaping CompletionClosure) {
         self.operation = operation
     }
@@ -42,7 +50,7 @@ public class CompletionOperation<T> {
         })
     }
     
-    public func convert<OtherType>(_ convertClosure: @escaping (_ value: T) -> (OtherType)) -> CompletionOperation<OtherType>{
+    public func map<OtherType>(_ convertClosure: @escaping (_ value: T) -> (OtherType)) -> CompletionOperation<OtherType>{
         
         return CompletionOperation<OtherType>.create({ (completion) in
             

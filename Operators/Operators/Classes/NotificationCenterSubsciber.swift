@@ -12,6 +12,7 @@ public class NotificationCenterSubsciber<SubscriberType> : EventSubscriberProtoc
         self.notificationCenter = notificationCenter
         self.notificationName = name
         self.handler = handler
+        super.init()
         notificationCenter.addObserver(self, selector: #selector(eventHandler(notification:)), name: notificationName, object: nil)
     }
     
@@ -19,14 +20,14 @@ public class NotificationCenterSubsciber<SubscriberType> : EventSubscriberProtoc
         unsubsribe()
     }
     
-    public func unsubsribe() {
+    public override func unsubsribe() {
         self.notificationCenter.removeObserver(self)
         self.handler = nil
     }
     
     @objc func eventHandler(notification: NSNotification) {
         guard let value = notification.object as? SubscriberType else {
-            print("TODO: event data missing")
+            print("TODO: event data missing \( notification.object.debugDescription )")
             return
         }
         

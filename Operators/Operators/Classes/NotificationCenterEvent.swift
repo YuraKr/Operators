@@ -1,7 +1,6 @@
 import Foundation
 
-public class NotificationCenterEvent<T> : EventProtocol {
-    public typealias EventType = T
+public class NotificationCenterEvent<T> : EventProtocol<T> {
 
     let notificationCenter : Foundation.NotificationCenter
     let notificationName : NSNotification.Name
@@ -11,12 +10,12 @@ public class NotificationCenterEvent<T> : EventProtocol {
         self.notificationName = name
     }
 
-    public func subscibe(handler: @escaping EventHandler) -> EventSubscriberProtocol {
+    override public func subscibe(handler: @escaping EventProtocol<T>.EventHandler) -> EventSubscriberProtocol {
         let subscriber = NotificationCenterSubsciber<T>(self.notificationCenter, name: self.notificationName, handler: handler)
         return subscriber
     }
 
-    public func raise(value:T) {
+    override public func raise(value:T) {
         notificationCenter.post(name: notificationName, object: value)
     }
 }
