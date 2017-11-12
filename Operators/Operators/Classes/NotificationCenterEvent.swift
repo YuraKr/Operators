@@ -4,7 +4,7 @@ public class NotificationCenterEvent<T> : EventProtocol<T> {
     
     let notificationCenter : Foundation.NotificationCenter
     let notificationName : NSNotification.Name
-
+    
     public init(_ notificationCenter: NotificationCenter, name:NSNotification.Name ) {
         self.notificationCenter = notificationCenter
         self.notificationName = name

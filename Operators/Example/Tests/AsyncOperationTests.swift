@@ -70,17 +70,19 @@ class CompletionOperationTests: QuickSpec {
         context("Event") {
             
             var testEvent: NotificationCenterEvent<String>!
+            var testEventOther: NotificationCenterEvent<Int>!
             
             beforeEach {
-                let nc = NotificationCenter.default
-                let name = Notification.Name("test")
+                let notificationCenter:NotificationCenter  = NotificationCenter.default
                 
-                testEvent = NotificationCenterEvent<String>(nc, name:name)
+                testEvent = NotificationCenterEvent<String>(notificationCenter, name:Notification.Name("test"))
+                testEventOther = NotificationCenterEvent<Int>(notificationCenter, name:Notification.Name("test1"))
             }
             
             it("Habdle the subscribe event") {
                 var result:String = ""
                 var subscriberToTheEvent:EventSubscriberProtocol?
+                var subscriberToTheEventOther:EventSubscriberProtocol?
                 
                 testEvent.subscibe(subscribed: { (subscriber) in
                     subscriberToTheEvent = subscriber
@@ -88,11 +90,19 @@ class CompletionOperationTests: QuickSpec {
                     result += "result \(value);"
                 })
                 
+                testEventOther.subscibe(subscribed: { (subscriber) in
+                    subscriberToTheEventOther = subscriber
+                }).observe({ (value:Int) in
+                    result += "result int_\(value);"
+                })
+                
                 testEvent.raise(value: "1")
+                testEventOther.raise(value: 2)
                 
                 subscriberToTheEvent?.unsubsribe() //or equal subscriberToTheEvent = nil
+                subscriberToTheEventOther?.unsubsribe() //or equal subscriberToTheEventOther = nil
                 
-                expect(result) == "result 1;"
+                expect(result) == "result 1;result int_2;"
             }
             
             it("Habdle the unsubscribe event") {
@@ -105,7 +115,8 @@ class CompletionOperationTests: QuickSpec {
                     result += "result \(value);"
                 })
                 
-                subscriberToTheEvent?.unsubsribe()
+                subscriberToTheEvent?.unsubsribe() //or equal subscriberToTheEvent = nil
+                
                 testEvent.raise(value: "1")
                 
                 expect(result) == ""
