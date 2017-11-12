@@ -69,41 +69,46 @@ class CompletionOperationTests: QuickSpec {
         
         context("Event") {
             
-            it("Event") {
+            var testEvent: NotificationCenterEvent<String>!
+            
+            beforeEach {
                 let nc = NotificationCenter.default
                 let name = Notification.Name("test")
                 
-                let event = NotificationCenterEvent<String>(nc, name:name)
-                
-                let subscriber1 = event.subscibe(handler: { (value:String) in
-                    print("-> Subscriber 1 \(value)")
-                })
-                
-                event.raise(value: "value")
-                subscriber1.unsubsribe()
+                testEvent = NotificationCenterEvent<String>(nc, name:name)
             }
             
-            it("Habdle Event") {
-                let nc = NotificationCenter.default
-                let name = Notification.Name("test")
+            it("Habdle the subscribe event") {
+                var result:String = ""
+                var subscriberToTheEvent:EventSubscriberProtocol?
                 
-                let event = NotificationCenterEvent<String>(nc, name:name)
-                var subscriber: EventSubscriberProtocol?
-                
-                CompletionOperation<String>.create({ (completion) in
-                    
-                    subscriber = event.subscibe(handler: { (value:String) in
-                        completion(value)
-                    })
-                    
-                    completion("11")
-                }).observe({ (res:String) in
-                    print("-> Result \(res)")
+                testEvent.subscibe(subscribed: { (subscriber) in
+                    subscriberToTheEvent = subscriber
+                }).observe({ (value:String) in
+                    result += "result \(value);"
                 })
                 
-                event.raise(value: "value")
+                testEvent.raise(value: "1")
                 
-                subscriber?.unsubsribe();
+                subscriberToTheEvent?.unsubsribe() //or equal subscriberToTheEvent = nil
+                
+                expect(result) == "result 1;"
+            }
+            
+            it("Habdle the unsubscribe event") {
+                var result:String = ""
+                var subscriberToTheEvent:EventSubscriberProtocol?
+                
+                testEvent.subscibe(subscribed: { (subscriber) in
+                    subscriberToTheEvent = subscriber
+                }).observe({ (value:String) in
+                    result += "result \(value);"
+                })
+                
+                subscriberToTheEvent?.unsubsribe()
+                testEvent.raise(value: "1")
+                
+                expect(result) == ""
             }
         }
         

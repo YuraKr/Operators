@@ -10,7 +10,9 @@
 public class EventProtocol<T> {
     public typealias EventHandler = (_ value:T) -> ()
     
-    public func subscibe(handler: @escaping EventHandler) -> EventSubscriberProtocol {
+    public typealias SubscriberCreatedClosure = (_ subscriber: EventSubscriberProtocol) -> ()
+
+    public func subscibe(subscribed: @escaping SubscriberCreatedClosure) -> CompletionOperation<(T)> {
         preconditionFailure("This method must be overridden")
     }
     

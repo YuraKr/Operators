@@ -26,7 +26,7 @@ public class CompletionOperation<T> {
         operation(result)
     }
     
-    public func next(_ next: @escaping (_ value: T) -> ()) -> CompletionOperation<T>{
+    public func next(_ next: @escaping ResultClosure) -> CompletionOperation<T>{
         
         return CompletionOperation<T>.create({ (completion) in
             
