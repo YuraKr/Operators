@@ -1,6 +1,15 @@
 
 public class CompletionOperation<T> {
     
+    public enum InternalError: Error {
+        case invalidErrorType
+    }
+    
+    public enum ResultWithError {
+        case Success(r: T)
+        case Error(e: Error)
+    }
+    
     public typealias ResultClosure = (_ res: T) -> ()
     public typealias CompletionClosure = (_ completion: @escaping ResultClosure) -> ()
     
@@ -29,37 +38,56 @@ public class CompletionOperation<T> {
     public func next(_ next: @escaping ResultClosure) -> CompletionOperation<T>{
         
         return CompletionOperation<T>.create({ (completion) in
-            
             self.observe({ (res) in
                 next(res)
                 completion(res)
             })
-            
         })
-        
     }
     
     public func filter(_ filter: @escaping (_ value: T) -> (Bool)) -> CompletionOperation<T>{
         
         return CompletionOperation<T>.create({ (completion) in
+            
             self.observe({ (res) in
                 if (filter(res)) {
                     completion(res)
                 }
             })
+            
         })
     }
     
-    public func map<OtherType>(_ convertClosure: @escaping (_ value: T) -> (OtherType)) -> CompletionOperation<OtherType>{
+    public func map<OtherType>(_ mapClosure: @escaping (_ value: T) -> (OtherType)) -> CompletionOperation<OtherType>{
         
         return CompletionOperation<OtherType>.create({ (completion) in
             
             self.observe({ (res) in
-                let convRes = convertClosure(res)
+                let convRes = mapClosure(res)
                 completion(convRes)
             })
             
         })
         
+    }
+    
+    public func checkError<OtherType>(_ errorClosure: @escaping (_ error: Error) -> ()) -> CompletionOperation<OtherType>{
+        
+        return CompletionOperation<OtherType>.create({ (completion) in
+            
+            self.observe({ (res:T) in
+                
+                guard let resultWithError =  res as? CompletionOperation<OtherType>.ResultWithError else {
+                    errorClosure(InternalError.invalidErrorType)
+                    return
+                }
+                switch resultWithError {
+                case .Success(let r): completion(r)
+                case .Error(let e): errorClosure(e)
+                }
+                
+            })
+            
+        })
     }
 }

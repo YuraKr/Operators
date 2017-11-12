@@ -6,6 +6,14 @@ import Operators
 import Foundation
 
 class CompletionOperationTests: QuickSpec {
+    enum TestError: Error {
+        case anyError
+    }
+    
+    func throwCustomError(anyError: TestError) throws {
+        throw anyError
+    }
+    
     override func spec() {
         
         
@@ -20,7 +28,7 @@ class CompletionOperationTests: QuickSpec {
                 expect(result) == "result 5;result 4;"
             }
             
-            it("should filter") {
+            it("should filter results value") {
                 var result:String = ""
                 
                 CompletionOperation<String>.signal([7,4]).filter({ (value:Int) -> (Bool) in
@@ -65,6 +73,37 @@ class CompletionOperationTests: QuickSpec {
                 })
                 expect(result) == "result str_4;"
             }
+            
+            it("should handle no errors operation completion") {
+                var result:String = ""
+                
+                typealias ResultWithError = CompletionOperation<String>.ResultWithError
+                
+                CompletionOperation<String>.signal([ResultWithError.Success(r: "success"), ResultWithError.Error(e: TestError.anyError)])
+                    .checkError({ (error:Error) in
+                        result += "result error;"
+                    }).observe({ (res:String) in
+                        result += "result \(res);"
+                    })
+                
+                expect(result) == "result success;result error;"
+            }
+            
+            it("should handle errors") {
+                var result:String = ""
+                
+                typealias ResultWithError = CompletionOperation<String>.ResultWithError
+                
+                CompletionOperation<String>.signal([ResultWithError.Success(r: "success"), ResultWithError.Error(e: TestError.anyError)])
+                    .checkError({ (error:Error) in
+                        result += "result error;"
+                    }).observe({ (res:String) in
+                        result += "result \(res);"
+                    })
+                
+                expect(result) == "result success;result error;"
+            }
+            
         }
         
         context("Event") {
