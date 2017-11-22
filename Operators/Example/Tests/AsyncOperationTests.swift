@@ -104,6 +104,21 @@ class CompletionOperationTests: QuickSpec {
                 expect(result) == "result success;result error;"
             }
             
+            it("should handle invalid errors") {
+                var result:String = ""
+                
+                
+                typealias ResultEnum = CompletionOperation<String>.ResultWithError
+                CompletionOperation<String>.signal([ResultEnum.Success(r: "success"), ResultEnum.Error(e: TestError.anyError)])
+                    .checkError({ (error:Error) in
+                        result += "result error;"
+                    }).observe({ (res:String) in
+                        result += "result \(res);"
+                    })
+                
+                expect(result) == "result success;result error;"
+            }
+            
         }
         
         context("Event") {

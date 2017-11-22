@@ -78,8 +78,7 @@ public class CompletionOperation<T> {
             self.observe({ (res:T) in
                 
                 guard let resultWithError =  res as? CompletionOperation<OtherType>.ResultWithError else {
-                    errorClosure(InternalError.invalidErrorType)
-                    return
+                    fatalError("Operation return unexpected type. Expect CompletionOperation<AnyType>.ResultWithError")
                 }
                 switch resultWithError {
                 case .Success(let r): completion(r)
