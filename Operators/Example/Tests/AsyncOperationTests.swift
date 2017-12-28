@@ -6,6 +6,24 @@ import Operators
 import Foundation
 
 class CompletionOperationTests: QuickSpec {
+    public enum ResultWithError {
+        case Success(r: String)
+        case Error(e: Error)
+        
+        func isError() -> Bool {
+            switch self {
+            case .Success(_): return false
+            case .Error(_): return true
+            }
+        }
+        func successValue() -> String {
+            switch self {
+            case .Success(let value): return value
+            case .Error(_): fatalError("Operation failed")
+            }
+        }
+    }
+
     enum TestError: Error {
         case anyError
     }
@@ -74,49 +92,20 @@ class CompletionOperationTests: QuickSpec {
                 expect(result) == "result str_4;"
             }
             
-            it("should handle no errors operation completion") {
+            it("should stop execution if errors") {
                 var result:String = ""
                 
-                typealias ResultWithError = CompletionOperation<String>.ResultWithError
-                
-                CompletionOperation<String>.signal([ResultWithError.Success(r: "success"), ResultWithError.Error(e: TestError.anyError)])
-                    .checkError({ (error:Error) in
-                        result += "result error;"
+                CompletionOperation<ResultWithError>.signal([ResultWithError.Success(r: "success"), ResultWithError.Error(e: TestError.anyError)])
+                    .filter({ (res:ResultWithError) -> (Bool) in
+                        result += "filter;"
+                        return !res.isError()
+                    }).map({ (res: ResultWithError) -> (String) in
+                        return res.successValue()
                     }).observe({ (res:String) in
                         result += "result \(res);"
                     })
                 
-                expect(result) == "result success;result error;"
-            }
-            
-            it("should handle errors") {
-                var result:String = ""
-                
-                typealias ResultWithError = CompletionOperation<String>.ResultWithError
-                
-                CompletionOperation<String>.signal([ResultWithError.Success(r: "success"), ResultWithError.Error(e: TestError.anyError)])
-                    .checkError({ (error:Error) in
-                        result += "result error;"
-                    }).observe({ (res:String) in
-                        result += "result \(res);"
-                    })
-                
-                expect(result) == "result success;result error;"
-            }
-            
-            it("should handle invalid errors") {
-                var result:String = ""
-                
-                
-                typealias ResultEnum = CompletionOperation<String>.ResultWithError
-                CompletionOperation<String>.signal([ResultEnum.Success(r: "success"), ResultEnum.Error(e: TestError.anyError)])
-                    .checkError({ (error:Error) in
-                        result += "result error;"
-                    }).observe({ (res:String) in
-                        result += "result \(res);"
-                    })
-                
-                expect(result) == "result success;result error;"
+                expect(result) == "filter;result success;filter;"
             }
             
         }

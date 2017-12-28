@@ -1,14 +1,14 @@
 
 public class CompletionOperation<T> {
     
-    public enum InternalError: Error {
-        case invalidErrorType
-    }
+//    public enum InternalError: Error {
+//        case invalidErrorType
+//    }
     
-    public enum ResultWithError {
-        case Success(r: T)
-        case Error(e: Error)
-    }
+//    public enum ResultWithError {
+//        case Success(r: T)
+//        case Error(e: Error)
+//    }
     
     public typealias ResultClosure = (_ res: T) -> ()
     public typealias CompletionClosure = (_ completion: @escaping ResultClosure) -> ()
@@ -69,24 +69,5 @@ public class CompletionOperation<T> {
             
         })
         
-    }
-    
-    public func checkError<OtherType>(_ errorClosure: @escaping (_ error: Error) -> ()) -> CompletionOperation<OtherType>{
-        
-        return CompletionOperation<OtherType>.create({ (completion) in
-            
-            self.observe({ (res:T) in
-                
-                guard let resultWithError =  res as? CompletionOperation<OtherType>.ResultWithError else {
-                    fatalError("Operation return unexpected type. Expect CompletionOperation<AnyType>.ResultWithError")
-                }
-                switch resultWithError {
-                case .Success(let r): completion(r)
-                case .Error(let e): errorClosure(e)
-                }
-                
-            })
-            
-        })
     }
 }
