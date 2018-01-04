@@ -2,11 +2,16 @@ PODS:
   - Nimble (7.0.2)
   - Operators (0.1.0)
   - Quick (1.2.0)
+  - RxCocoa (4.0.0):
+    - RxSwift (~> 4.0)
+  - RxSwift (4.0.0)
 
 DEPENDENCIES:
   - Nimble (~> 7.0.2)
   - Operators (from `../`)
   - Quick (~> 1.2.0)
+  - RxCocoa (~> 4.0)
+  - RxSwift (~> 4.0)
 
 EXTERNAL SOURCES:
   Operators:
@@ -16,7 +21,9 @@ SPEC CHECKSUMS:
   Nimble: bfe1f814edabba69ff145cb1283e04ed636a67f2
   Operators: 5d3614e320aa980de2bf70b4da4b7f94ffdcaf9f
   Quick: 58d203b1c5e27fff7229c4c1ae445ad7069a7a08
+  RxCocoa: d62846ca96495d862fa4c59ea7d87e5031d7340e
+  RxSwift: fd680d75283beb5e2559486f3c0ff852f0d35334
 
-PODFILE CHECKSUM: f53899f4ac8803a8ac6c0b09cd097c56b967603e
+PODFILE CHECKSUM: 5d13fc3182fae09c2ef99dc93dee829fcdfbfa9e
 
 COCOAPODS: 1.3.1
